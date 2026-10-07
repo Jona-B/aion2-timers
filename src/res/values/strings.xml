@@ -5,6 +5,10 @@
     <string name="widget_desc">Upcoming AION 2 bosses and events with live countdowns</string>
     <string name="up_next">Up next</string>
     <string name="ongoing">live</string>
+    <string name="after_that">AFTER THAT</string>
+    <string name="today_at">Today at </string>
+    <string name="ongoing_until">Live · ends at </string>
+    <string name="preview_hero_when">Today at 22:00</string>
     <string name="cap_live">remaining · live</string>
     <string name="cap_until">until start</string>
     <string name="server_prefix">Server: </string>

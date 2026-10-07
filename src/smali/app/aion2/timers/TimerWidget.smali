@@ -6,6 +6,7 @@
 .field static sElapsed:J
 .field static sFmt:Ljava/text/SimpleDateFormat;
 .field static sStarts:[J
+.field static sFmtTime:Ljava/text/SimpleDateFormat;
 
 .method public constructor <init>()V
     .locals 0
@@ -120,6 +121,84 @@
     return-wide v11
 .end method
 
+# Hero block (row 0): colored name, category icon, "Today at 22:00" / "Live · ends at 22:08".
+.method static hero(Landroid/content/Context;Landroid/widget/RemoteViews;I)V
+    .locals 12
+    sget-object v0, Lapp/aion2/timers/Schedule;->CAT:[I
+    aget v0, v0, p2
+    sget-object v1, Lapp/aion2/timers/Schedule;->COLORS:[I
+    aget v1, v1, v0
+    const-string v2, "n"
+    const/4 v3, 0x0
+    invoke-static {p0, v2, v3}, Lapp/aion2/timers/TimerWidget;->vid(Landroid/content/Context;Ljava/lang/String;I)I
+    move-result v2
+    invoke-virtual {p1, v2, v1}, Landroid/widget/RemoteViews;->setTextColor(II)V
+    const-string v2, "hi"
+    const-string v3, "id"
+    invoke-static {p0, v2, v3}, Lapp/aion2/timers/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
+    move-result v2
+    sget-object v3, Lapp/aion2/timers/MainActivity;->ICONS:[Ljava/lang/String;
+    aget-object v3, v3, v0
+    const-string v4, "drawable"
+    invoke-static {p0, v3, v4}, Lapp/aion2/timers/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
+    move-result v3
+    invoke-virtual {p1, v2, v3}, Landroid/widget/RemoteViews;->setImageViewResource(II)V
+    const-string v3, "setColorFilter"
+    invoke-virtual {p1, v2, v3, v1}, Landroid/widget/RemoteViews;->setInt(ILjava/lang/String;I)V
+    sget-object v3, Lapp/aion2/timers/TimerWidget;->sStarts:[J
+    aget-wide v4, v3, p2
+    sget-wide v6, Lapp/aion2/timers/TimerWidget;->sNow:J
+    new-instance v8, Ljava/lang/StringBuilder;
+    invoke-direct {v8}, Ljava/lang/StringBuilder;-><init>()V
+    cmp-long v3, v4, v6
+    if-gtz v3, :future
+    const-string v2, "ongoing_until"
+    invoke-static {p0, v2}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v2
+    invoke-virtual {v8, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    sget-object v2, Lapp/aion2/timers/Schedule;->DUR:[I
+    aget v2, v2, p2
+    int-to-long v9, v2
+    const-wide/32 v2, 0xea60
+    mul-long/2addr v9, v2
+    add-long/2addr v9, v4
+    goto :time
+    :future
+    move-wide v9, v4
+    invoke-static {v4, v5}, Landroid/text/format/DateUtils;->isToday(J)Z
+    move-result v2
+    if-eqz v2, :other
+    const-string v2, "today_at"
+    invoke-static {p0, v2}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v2
+    invoke-virtual {v8, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    goto :time
+    :other
+    sget-object v2, Lapp/aion2/timers/TimerWidget;->sFmt:Ljava/text/SimpleDateFormat;
+    new-instance v3, Ljava/util/Date;
+    invoke-direct {v3, v4, v5}, Ljava/util/Date;-><init>(J)V
+    invoke-virtual {v2, v3}, Ljava/text/DateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
+    move-result-object v2
+    invoke-virtual {v8, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    goto :settext
+    :time
+    sget-object v2, Lapp/aion2/timers/TimerWidget;->sFmtTime:Ljava/text/SimpleDateFormat;
+    new-instance v3, Ljava/util/Date;
+    invoke-direct {v3, v9, v10}, Ljava/util/Date;-><init>(J)V
+    invoke-virtual {v2, v3}, Ljava/text/DateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
+    move-result-object v2
+    invoke-virtual {v8, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :settext
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v8
+    const-string v2, "w"
+    const/4 v3, 0x0
+    invoke-static {p0, v2, v3}, Lapp/aion2/timers/TimerWidget;->vid(Landroid/content/Context;Ljava/lang/String;I)I
+    move-result v2
+    invoke-virtual {p1, v2, v8}, Landroid/widget/RemoteViews;->setTextViewText(ILjava/lang/CharSequence;)V
+    return-void
+.end method
+
 .method public static update(Landroid/content/Context;)V
     .locals 14
     sput-object p0, Lapp/aion2/timers/TimerWidget;->sCtx:Landroid/content/Context;
@@ -146,6 +225,10 @@
     move-result-object v6
     invoke-direct {v4, v5, v6}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
     sput-object v4, Lapp/aion2/timers/TimerWidget;->sFmt:Ljava/text/SimpleDateFormat;
+    new-instance v4, Ljava/text/SimpleDateFormat;
+    const-string v5, "HH:mm"
+    invoke-direct {v4, v5, v6}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
+    sput-object v4, Lapp/aion2/timers/TimerWidget;->sFmtTime:Ljava/text/SimpleDateFormat;
     invoke-static {p0}, Lapp/aion2/timers/Schedule;->serverTz(Landroid/content/Context;)Ljava/util/TimeZone;
     move-result-object v4
     invoke-static {v2, v3, v4}, Lapp/aion2/timers/Schedule;->computeAll(JLjava/util/TimeZone;)[J
@@ -165,7 +248,7 @@
     add-long/2addr v8, v2
     const/4 v10, 0x0
     :loop
-    const/16 v11, 0x8
+    const/16 v11, 0x7
     if-ge v10, v11, :loopdone
     aget v11, v6, v10
     invoke-static {v7, v10, v11}, Lapp/aion2/timers/TimerWidget;->row(Landroid/widget/RemoteViews;II)J
@@ -177,6 +260,9 @@
     add-int/lit8 v10, v10, 0x1
     goto :loop
     :loopdone
+    const/4 v10, 0x0
+    aget v10, v6, v10
+    invoke-static {p0, v7, v10}, Lapp/aion2/timers/TimerWidget;->hero(Landroid/content/Context;Landroid/widget/RemoteViews;I)V
     new-instance v10, Landroid/content/Intent;
     const-class v11, Lapp/aion2/timers/MainActivity;
     invoke-direct {v10, p0, v11}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
@@ -189,13 +275,6 @@
     invoke-static {p0, v11, v12}, Lapp/aion2/timers/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
     move-result v11
     invoke-virtual {v7, v11, v10}, Landroid/widget/RemoteViews;->setOnClickPendingIntent(ILandroid/app/PendingIntent;)V
-    const-string v11, "tz"
-    const-string v12, "id"
-    invoke-static {p0, v11, v12}, Lapp/aion2/timers/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
-    move-result v11
-    invoke-static {p0}, Lapp/aion2/timers/Schedule;->tzName(Landroid/content/Context;)Ljava/lang/String;
-    move-result-object v12
-    invoke-virtual {v7, v11, v12}, Landroid/widget/RemoteViews;->setTextViewText(ILjava/lang/CharSequence;)V
     invoke-virtual {v0, v1, v7}, Landroid/appwidget/AppWidgetManager;->updateAppWidget([ILandroid/widget/RemoteViews;)V
     const-wide/16 v10, 0x3e8
     add-long/2addr v8, v10

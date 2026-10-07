@@ -4,6 +4,10 @@
     <string name="widget_desc">Prochains boss et évènements d\'AION 2 avec compte à rebours</string>
     <string name="up_next">À suivre</string>
     <string name="ongoing">en cours</string>
+    <string name="after_that">ENSUITE</string>
+    <string name="today_at">Aujourd\'hui à </string>
+    <string name="ongoing_until">En cours · fin à </string>
+    <string name="preview_hero_when">Aujourd\'hui à 22:00</string>
     <string name="cap_live">restantes · en cours</string>
     <string name="cap_until">avant le début</string>
     <string name="server_prefix">Serveur : </string>

@@ -24,7 +24,7 @@ RULES = [
 ]
 N = len(RULES)
 COLORS = [0xFF007AFF, 0xFFAF52DE, 0xFFFF2D55, 0xFFFF9500, 0xFF30B0C7]
-ROWS = 8
+ROWS = 7  # 1 hero + 6 list rows
 
 
 def sesc(s):
@@ -64,8 +64,8 @@ packageInfo:
   forcedPackageId: 127
   renameManifestPackage: null
 versionInfo:
-  versionCode: 5
-  versionName: 1.3.1
+  versionCode: 6
+  versionName: 1.4
 resourcesAreCompressed: false
 sharedLibrary: false
 sparseResources: false
@@ -110,6 +110,10 @@ STR_EN = dict(
     widget_desc="Upcoming AION 2 bosses and events with live countdowns",
     up_next="Up next",
     ongoing="live",
+    after_that="AFTER THAT",
+    today_at="Today at ",
+    ongoing_until="Live · ends at ",
+    preview_hero_when="Today at 22:00",
     cap_live="remaining · live",
     cap_until="until start",
     server_prefix="Server: ",
@@ -125,6 +129,10 @@ STR_FR = dict(
     widget_desc="Prochains boss et évènements d'AION 2 avec compte à rebours",
     up_next="À suivre",
     ongoing="en cours",
+    after_that="ENSUITE",
+    today_at="Aujourd'hui à ",
+    ongoing_until="En cours · fin à ",
+    preview_hero_when="Aujourd'hui à 22:00",
     cap_live="restantes · en cours",
     cap_until="avant le début",
     server_prefix="Serveur : ",
@@ -207,43 +215,77 @@ w('res/xml/widget_info.xml', """<?xml version="1.0" encoding="utf-8"?>
     android:description="@string/widget_desc"/>
 """)
 
-# placeholders so the picker preview looks real
-PREVIEW = [("@string/rule_0", "@string/ongoing", 0), ("@string/rule_1", "21:30", 0),
-           ("@string/rule_3", "22:00", 2), ("@string/rule_2", "23:00", 1),
-           ("@string/rule_9", "16:00", 4), ("@string/rule_7", "11:00", 3),
-           ("@string/rule_8", "19:00", 3), ("@string/rule_4", "21:00", 3)]
+# ---------------------------------------------------------------- widget (hero + "after that" list)
+# placeholders so the picker preview looks real: (name, when, category)
+PREVIEW = [("@string/rule_3", "@string/preview_hero_when", 2), ("@string/rule_1", "22:30", 0),
+           ("@string/rule_2", "23:00", 1), ("@string/rule_7", "11:00", 3),
+           ("@string/rule_9", "16:00", 4), ("@string/rule_8", "19:00", 3),
+           ("@string/rule_4", "21:00", 3)]
+
+w('res/drawable/widget_card.xml', """<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/card"/>
+    <corners android:radius="22dp"/>
+</shape>
+""")
+w('res/drawable-v31/widget_card.xml', """<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/card"/>
+    <corners android:radius="@android:dimen/system_app_widget_background_radius"/>
+</shape>
+""")
+
+hero_name, hero_when, hero_cat = PREVIEW[0]
 rows = []
-for k in range(ROWS):
+for k in range(1, ROWS):
     name, when, cat = PREVIEW[k]
     col = '#%08X' % COLORS[cat]
     rows.append(f"""
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="5dp">
         <TextView android:id="@+id/d{k}" android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="●" android:textSize="11sp" android:textColor="{col}" android:paddingEnd="7dp"/>
+            android:text="●" android:textSize="9sp" android:textColor="{col}" android:paddingEnd="7dp"/>
         <TextView android:id="@+id/n{k}" android:layout_width="0dp" android:layout_weight="1"
             android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
-            android:text="{name}" android:textColor="#FFF2F2F5" android:textSize="13sp"/>
+            android:text="{name}" android:textColor="@color/label" android:textSize="13sp"/>
         <TextView android:id="@+id/w{k}" android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="{when}" android:textColor="#A6FFFFFF" android:textSize="11sp"
-            android:paddingStart="6dp" android:paddingEnd="8dp"/>
+            android:text="{when}" android:textColor="@color/secondary" android:textSize="12sp"
+            android:paddingStart="6dp" android:paddingEnd="8dp" android:fontFeatureSettings="tnum"/>
         <Chronometer android:id="@+id/c{k}" android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:minWidth="62dp" android:gravity="end" android:textColor="#FFFFFFFF"
-            android:textSize="13sp" android:textStyle="bold" android:fontFeatureSettings="tnum"/>
+            android:minWidth="56dp" android:gravity="end" android:textColor="@color/label"
+            android:textSize="13sp" android:fontFamily="sans-serif-medium" android:fontFeatureSettings="tnum"/>
     </LinearLayout>""")
 
 w('res/layout/widget.xml', f"""<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root" android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:padding="14dp" android:background="@drawable/widget_bg">
+    android:orientation="vertical" android:paddingStart="16dp" android:paddingEnd="16dp"
+    android:paddingTop="14dp" android:paddingBottom="12dp" android:background="@drawable/widget_card">
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="4dp">
-        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
-            android:text="@string/widget_label" android:textColor="#FFE8C46A"
-            android:textSize="13sp" android:textStyle="bold" android:singleLine="true" android:ellipsize="end"/>
-        <TextView android:id="@+id/tz" android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Europe/Berlin" android:textColor="#80FFFFFF" android:textSize="10sp"/>
-    </LinearLayout>{''.join(rows)}
+        android:orientation="horizontal">
+        <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView android:id="@+id/n0" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="{hero_name}" android:textColor="#{COLORS[hero_cat]:08X}" android:textSize="15sp"
+                android:fontFamily="sans-serif-medium" android:singleLine="true" android:ellipsize="end"/>
+            <TextView android:id="@+id/w0" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="{hero_when}" android:textColor="@color/secondary" android:textSize="13sp"
+                android:singleLine="true" android:ellipsize="end"/>
+        </LinearLayout>
+        <ImageView android:id="@+id/hi" android:layout_width="22dp" android:layout_height="22dp"
+            android:layout_marginStart="8dp" android:src="@drawable/ic_boss"/>
+        <TextView android:id="@+id/d0" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:visibility="gone"/>
+    </LinearLayout>
+    <Chronometer android:id="@+id/c0" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textColor="@color/label" android:textSize="38sp" android:fontFamily="sans-serif"
+        android:textStyle="bold" android:fontFeatureSettings="tnum" android:includeFontPadding="false"
+        android:layout_marginTop="4dp"/>
+    <View android:layout_width="match_parent" android:layout_height="0.5dp" android:layout_marginTop="10dp"
+        android:background="@color/separator"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp"
+        android:text="@string/after_that" android:textColor="@color/secondary" android:textSize="11sp"
+        android:letterSpacing="0.06" android:fontFamily="sans-serif-medium"/>{''.join(rows)}
 </LinearLayout>
 """)
 
@@ -543,6 +585,7 @@ w('smali/app/aion2/timers/TimerWidget.smali', f""".class public {P}/TimerWidget;
 .field static sElapsed:J
 .field static sFmt:Ljava/text/SimpleDateFormat;
 .field static sStarts:[J
+.field static sFmtTime:Ljava/text/SimpleDateFormat;
 
 .method public constructor <init>()V
     .locals 0
@@ -657,6 +700,84 @@ w('smali/app/aion2/timers/TimerWidget.smali', f""".class public {P}/TimerWidget;
     return-wide v11
 .end method
 
+# Hero block (row 0): colored name, category icon, "Today at 22:00" / "Live · ends at 22:08".
+.method static hero(Landroid/content/Context;Landroid/widget/RemoteViews;I)V
+    .locals 12
+    sget-object v0, {P}/Schedule;->CAT:[I
+    aget v0, v0, p2
+    sget-object v1, {P}/Schedule;->COLORS:[I
+    aget v1, v1, v0
+    const-string v2, "n"
+    const/4 v3, 0x0
+    invoke-static {{p0, v2, v3}}, {P}/TimerWidget;->vid(Landroid/content/Context;Ljava/lang/String;I)I
+    move-result v2
+    invoke-virtual {{p1, v2, v1}}, Landroid/widget/RemoteViews;->setTextColor(II)V
+    const-string v2, "hi"
+    const-string v3, "id"
+    invoke-static {{p0, v2, v3}}, {P}/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
+    move-result v2
+    sget-object v3, {P}/MainActivity;->ICONS:[Ljava/lang/String;
+    aget-object v3, v3, v0
+    const-string v4, "drawable"
+    invoke-static {{p0, v3, v4}}, {P}/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
+    move-result v3
+    invoke-virtual {{p1, v2, v3}}, Landroid/widget/RemoteViews;->setImageViewResource(II)V
+    const-string v3, "setColorFilter"
+    invoke-virtual {{p1, v2, v3, v1}}, Landroid/widget/RemoteViews;->setInt(ILjava/lang/String;I)V
+    sget-object v3, {P}/TimerWidget;->sStarts:[J
+    aget-wide v4, v3, p2
+    sget-wide v6, {P}/TimerWidget;->sNow:J
+    new-instance v8, Ljava/lang/StringBuilder;
+    invoke-direct {{v8}}, Ljava/lang/StringBuilder;-><init>()V
+    cmp-long v3, v4, v6
+    if-gtz v3, :future
+    const-string v2, "ongoing_until"
+    invoke-static {{p0, v2}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v2
+    invoke-virtual {{v8, v2}}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    sget-object v2, {P}/Schedule;->DUR:[I
+    aget v2, v2, p2
+    int-to-long v9, v2
+    const-wide/32 v2, 0xea60
+    mul-long/2addr v9, v2
+    add-long/2addr v9, v4
+    goto :time
+    :future
+    move-wide v9, v4
+    invoke-static {{v4, v5}}, Landroid/text/format/DateUtils;->isToday(J)Z
+    move-result v2
+    if-eqz v2, :other
+    const-string v2, "today_at"
+    invoke-static {{p0, v2}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v2
+    invoke-virtual {{v8, v2}}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    goto :time
+    :other
+    sget-object v2, {P}/TimerWidget;->sFmt:Ljava/text/SimpleDateFormat;
+    new-instance v3, Ljava/util/Date;
+    invoke-direct {{v3, v4, v5}}, Ljava/util/Date;-><init>(J)V
+    invoke-virtual {{v2, v3}}, Ljava/text/DateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
+    move-result-object v2
+    invoke-virtual {{v8, v2}}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    goto :settext
+    :time
+    sget-object v2, {P}/TimerWidget;->sFmtTime:Ljava/text/SimpleDateFormat;
+    new-instance v3, Ljava/util/Date;
+    invoke-direct {{v3, v9, v10}}, Ljava/util/Date;-><init>(J)V
+    invoke-virtual {{v2, v3}}, Ljava/text/DateFormat;->format(Ljava/util/Date;)Ljava/lang/String;
+    move-result-object v2
+    invoke-virtual {{v8, v2}}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :settext
+    invoke-virtual {{v8}}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v8
+    const-string v2, "w"
+    const/4 v3, 0x0
+    invoke-static {{p0, v2, v3}}, {P}/TimerWidget;->vid(Landroid/content/Context;Ljava/lang/String;I)I
+    move-result v2
+    invoke-virtual {{p1, v2, v8}}, Landroid/widget/RemoteViews;->setTextViewText(ILjava/lang/CharSequence;)V
+    return-void
+.end method
+
 .method public static update(Landroid/content/Context;)V
     .locals 14
     sput-object p0, {P}/TimerWidget;->sCtx:Landroid/content/Context;
@@ -683,6 +804,10 @@ w('smali/app/aion2/timers/TimerWidget.smali', f""".class public {P}/TimerWidget;
     move-result-object v6
     invoke-direct {{v4, v5, v6}}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
     sput-object v4, {P}/TimerWidget;->sFmt:Ljava/text/SimpleDateFormat;
+    new-instance v4, Ljava/text/SimpleDateFormat;
+    const-string v5, "HH:mm"
+    invoke-direct {{v4, v5, v6}}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
+    sput-object v4, {P}/TimerWidget;->sFmtTime:Ljava/text/SimpleDateFormat;
     invoke-static {{p0}}, {P}/Schedule;->serverTz(Landroid/content/Context;)Ljava/util/TimeZone;
     move-result-object v4
     invoke-static {{v2, v3, v4}}, {P}/Schedule;->computeAll(JLjava/util/TimeZone;)[J
@@ -714,6 +839,9 @@ w('smali/app/aion2/timers/TimerWidget.smali', f""".class public {P}/TimerWidget;
     add-int/lit8 v10, v10, 0x1
     goto :loop
     :loopdone
+    const/4 v10, 0x0
+    aget v10, v6, v10
+    invoke-static {{p0, v7, v10}}, {P}/TimerWidget;->hero(Landroid/content/Context;Landroid/widget/RemoteViews;I)V
     new-instance v10, Landroid/content/Intent;
     const-class v11, {P}/MainActivity;
     invoke-direct {{v10, p0, v11}}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
@@ -726,13 +854,6 @@ w('smali/app/aion2/timers/TimerWidget.smali', f""".class public {P}/TimerWidget;
     invoke-static {{p0, v11, v12}}, {P}/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
     move-result v11
     invoke-virtual {{v7, v11, v10}}, Landroid/widget/RemoteViews;->setOnClickPendingIntent(ILandroid/app/PendingIntent;)V
-    const-string v11, "tz"
-    const-string v12, "id"
-    invoke-static {{p0, v11, v12}}, {P}/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
-    move-result v11
-    invoke-static {{p0}}, {P}/Schedule;->tzName(Landroid/content/Context;)Ljava/lang/String;
-    move-result-object v12
-    invoke-virtual {{v7, v11, v12}}, Landroid/widget/RemoteViews;->setTextViewText(ILjava/lang/CharSequence;)V
     invoke-virtual {{v0, v1, v7}}, Landroid/appwidget/AppWidgetManager;->updateAppWidget([ILandroid/widget/RemoteViews;)V
     const-wide/16 v10, 0x3e8
     add-long/2addr v8, v10
