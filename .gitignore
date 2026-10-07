@@ -3,3 +3,4 @@ tools/
 keystore/
 *.idsig
 *.tgz
+__pycache__/
