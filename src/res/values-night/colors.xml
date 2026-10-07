@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#FF000000</color>
+    <color name="card">#FF1C1C1E</color>
+    <color name="label">#FFFFFFFF</color>
+    <color name="secondary">#FF98989D</color>
+    <color name="tertiary">#FF48484A</color>
+    <color name="separator">#FF38383A</color>
+    <color name="tabbar">#FF161618</color>
+    <color name="link">#FF0A84FF</color>
+</resources>

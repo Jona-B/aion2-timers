@@ -1,0 +1,54 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Outils (apktool + apksigner via npm)
+        run: |
+          mkdir -p tools && cd tools
+          npm pack @postar/apktool-node@0.3.4 --silent
+          tar xzf postar-apktool-node-0.3.4.tgz
+
+      - name: Clé de signature (secret KEYSTORE_BASE64)
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::Ajoute le secret KEYSTORE_BASE64 (Settings > Secrets and variables > Actions)"; exit 1
+          fi
+          mkdir -p keystore
+          echo "$KEYSTORE_BASE64" | base64 -d > keystore/aion2.jks
+
+      - name: Build + signature
+        run: |
+          mkdir -p build
+          APKTOOL=tools/package/lib/apktool.jar APKSIGNER=tools/package/lib/apksigner.jar sh build.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AION2-Timers
+          path: build/AION2-Timers.apk
+
+      - name: Publier une release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: AION 2 Timers — build ${{ github.run_number }}
+          body: APK généré automatiquement depuis ${{ github.sha }}.
+          files: build/AION2-Timers.apk

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="14dp" android:background="@drawable/widget_bg">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="4dp">
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:text="AION 2 · Boss &amp; Évènements" android:textColor="#FFE8C46A"
+            android:textSize="13sp" android:textStyle="bold" android:singleLine="true" android:ellipsize="end"/>
+        <TextView android:id="@+id/tz" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Europe/Berlin" android:textColor="#80FFFFFF" android:textSize="10sp"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="5dp">
+        <TextView android:id="@+id/d0" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="●" android:textSize="11sp" android:textColor="#FF007AFF" android:paddingEnd="7dp"/>
+        <TextView android:id="@+id/n0" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+            android:text="Festival des Shugos" android:textColor="#FFF2F2F5" android:textSize="13sp"/>
+        <TextView android:id="@+id/w0" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="en cours" android:textColor="#A6FFFFFF" android:textSize="11sp"
+            android:paddingStart="6dp" android:paddingEnd="8dp"/>
+        <Chronometer android:id="@+id/c0" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minWidth="62dp" android:gravity="end" android:textColor="#FFFFFFFF"
+            android:textSize="13sp" android:textStyle="bold" android:fontFeatureSettings="tnum"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="5dp">
+        <TextView android:id="@+id/d1" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="●" android:textSize="11sp" android:textColor="#FF007AFF" android:paddingEnd="7dp"/>
+        <TextView android:id="@+id/n1" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+            android:text="Invasion dimensionnelle" android:textColor="#FFF2F2F5" android:textSize="13sp"/>
+        <TextView android:id="@+id/w1" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="mer. 21:30" android:textColor="#A6FFFFFF" android:textSize="11sp"
+            android:paddingStart="6dp" android:paddingEnd="8dp"/>
+        <Chronometer android:id="@+id/c1" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minWidth="62dp" android:gravity="end" android:textColor="#FFFFFFFF"
+            android:textSize="13sp" android:textStyle="bold" android:fontFeatureSettings="tnum"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="5dp">
+        <TextView android:id="@+id/d2" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="●" android:textSize="11sp" android:textColor="#FFFF2D55" android:paddingEnd="7dp"/>
+        <TextView android:id="@+id/n2" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+            android:text="Kaira la veilleuse" android:textColor="#FFF2F2F5" android:textSize="13sp"/>
+        <TextView android:id="@+id/w2" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="mer. 22:00" android:textColor="#A6FFFFFF" android:textSize="11sp"
+            android:paddingStart="6dp" android:paddingEnd="8dp"/>
+        <Chronometer android:id="@+id/c2" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minWidth="62dp" android:gravity="end" android:textColor="#FFFFFFFF"
+            android:textSize="13sp" android:textStyle="bold" android:fontFeatureSettings="tnum"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="5dp">
+        <TextView android:id="@+id/d3" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="●" android:textSize="11sp" android:textColor="#FFAF52DE" android:paddingEnd="7dp"/>
+        <TextView android:id="@+id/n3" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+            android:text="Faille spatio-temporelle" android:textColor="#FFF2F2F5" android:textSize="13sp"/>
+        <TextView android:id="@+id/w3" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="mer. 23:00" android:textColor="#A6FFFFFF" android:textSize="11sp"
+            android:paddingStart="6dp" android:paddingEnd="8dp"/>
+        <Chronometer android:id="@+id/c3" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minWidth="62dp" android:gravity="end" android:textColor="#FFFFFFFF"
+            android:textSize="13sp" android:textStyle="bold" android:fontFeatureSettings="tnum"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="5dp">
+        <TextView android:id="@+id/d4" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="●" android:textSize="11sp" android:textColor="#FF30B0C7" android:paddingEnd="7dp"/>
+        <TextView android:id="@+id/n4" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+            android:text="Reset quotidien" android:textColor="#FFF2F2F5" android:textSize="13sp"/>
+        <TextView android:id="@+id/w4" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="jeu. 16:00" android:textColor="#A6FFFFFF" android:textSize="11sp"
+            android:paddingStart="6dp" android:paddingEnd="8dp"/>
+        <Chronometer android:id="@+id/c4" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minWidth="62dp" android:gravity="end" android:textColor="#FFFFFFFF"
+            android:textSize="13sp" android:textStyle="bold" android:fontFeatureSettings="tnum"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="5dp">
+        <TextView android:id="@+id/d5" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="●" android:textSize="11sp" android:textColor="#FFFF9500" android:paddingEnd="7dp"/>
+        <TextView android:id="@+id/n5" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+            android:text="Arène 10v10 (midi)" android:textColor="#FFF2F2F5" android:textSize="13sp"/>
+        <TextView android:id="@+id/w5" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="jeu. 11:00" android:textColor="#A6FFFFFF" android:textSize="11sp"
+            android:paddingStart="6dp" android:paddingEnd="8dp"/>
+        <Chronometer android:id="@+id/c5" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minWidth="62dp" android:gravity="end" android:textColor="#FFFFFFFF"
+            android:textSize="13sp" android:textStyle="bold" android:fontFeatureSettings="tnum"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="5dp">
+        <TextView android:id="@+id/d6" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="●" android:textSize="11sp" android:textColor="#FFFF9500" android:paddingEnd="7dp"/>
+        <TextView android:id="@+id/n6" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+            android:text="Arène 10v10 (soir)" android:textColor="#FFF2F2F5" android:textSize="13sp"/>
+        <TextView android:id="@+id/w6" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="jeu. 19:00" android:textColor="#A6FFFFFF" android:textSize="11sp"
+            android:paddingStart="6dp" android:paddingEnd="8dp"/>
+        <Chronometer android:id="@+id/c6" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minWidth="62dp" android:gravity="end" android:textColor="#FFFFFFFF"
+            android:textSize="13sp" android:textStyle="bold" android:fontFeatureSettings="tnum"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="5dp">
+        <TextView android:id="@+id/d7" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="●" android:textSize="11sp" android:textColor="#FFFF9500" android:paddingEnd="7dp"/>
+        <TextView android:id="@+id/n7" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+            android:text="Siège des artefacts" android:textColor="#FFF2F2F5" android:textSize="13sp"/>
+        <TextView android:id="@+id/w7" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="jeu. 21:00" android:textColor="#A6FFFFFF" android:textSize="11sp"
+            android:paddingStart="6dp" android:paddingEnd="8dp"/>
+        <Chronometer android:id="@+id/c7" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minWidth="62dp" android:gravity="end" android:textColor="#FFFFFFFF"
+            android:textSize="13sp" android:textStyle="bold" android:fontFeatureSettings="tnum"/>
+    </LinearLayout>
+</LinearLayout>

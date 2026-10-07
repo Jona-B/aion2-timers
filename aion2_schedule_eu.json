@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "game": "AION 2",
+  "region": "EU",
+  "generated_at": "2026-10-07",
+  "client_build_reference": "global client 0.0.4387.0 (metabot.gg datamine)",
+
+  "server_clock": {
+    "_comment": "Toutes les heures ci-dessous sont en HEURE SERVEUR. Le fuseau du serveur EU n'est PAS confirmé officiellement. Le widget doit garder ce fuseau configurable et convertir vers le fuseau de l'appareil.",
+    "timezone": "Europe/Berlin",
+    "timezone_confidence": "low",
+    "timezone_candidates": [
+      { "tz": "Europe/Berlin", "source": "metabot.gg (hypothèse : EU = heure d'Europe centrale)" },
+      { "tz": "Asia/Tokyo", "source": "aion2hub.com (toutes les régions Global sur GMT+9)" }
+    ],
+    "how_to_verify": "Watcher Kaira (toutes les 3 h dès 01:00 serveur) : si elle apparaît à 22:00 heure de Paris -> Europe/Berlin ; si à 21:00 ou 00:00 -> Asia/Tokyo. Autre test : Arène de stratégie ouverte de 19:00 à 21:00 heure de Paris -> Europe/Berlin.",
+    "dst_warning": "Passage à l'heure d'hiver le 2026-10-25 : si le serveur est sur Asia/Tokyo, tous les horaires vus depuis Paris reculent d'1 h ; sur Europe/Berlin, ils ne bougent pas."
+  },
+
+  "resets": [
+    {
+      "id": "daily_reset",
+      "name_fr": "Reset quotidien",
+      "name_en": "Daily reset",
+      "schedule": { "type": "daily", "times": ["16:00"] },
+      "notes_fr": "16:00 sur l'horloge serveur selon la table ContentsTicket. aion2hub l'annonce à 07:00 UTC (09:00 Paris en été), ce qui correspond à 16:00 en GMT+9 ; à vérifier en jeu via le compte à rebours 'Daily recharge in'.",
+      "observed_paris_time": "09:00 (CEST, à confirmer)",
+      "confidence": "medium",
+      "sources": ["metabot.gg/en/aion-2/guides/daily-weekly-checklist", "aion2hub.com/tools/event-timer"]
+    },
+    {
+      "id": "weekly_reset",
+      "name_fr": "Reset hebdomadaire",
+      "name_en": "Weekly reset",
+      "schedule": { "type": "weekly", "days": ["WED"], "times": ["16:00"] },
+      "notes_fr": "Même heure que le reset quotidien, le mercredi. Les entrées hebdo (raids, Épreuve d'ascension, Subjugation, temps Abysses) ne se cumulent pas.",
+      "confidence": "medium",
+      "sources": ["metabot.gg/en/aion-2/guides/daily-weekly-checklist"]
+    },
+    {
+      "id": "reward_keys_refill",
+      "name_fr": "Recharge des clés (Festival Shugo / Invasion)",
+      "name_en": "Reward keys refill",
+      "schedule": { "type": "daily", "times": ["16:00"] },
+      "notes_fr": "Clé Festival Shugo +3/jour (max 12, 21 avec abonnement). Clé Invasion dimensionnelle +1/jour (max 7). Comptées par serveur, pas par personnage.",
+      "confidence": "medium",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    }
+  ],
+
+  "events": [
+    {
+      "id": "shugo_festival",
+      "category": "event",
+      "name_fr": "Festival des Shugos",
+      "name_en": "Shugo Festival",
+      "schedule": { "type": "hourly", "minute": 0 },
+      "prep_minutes": 3,
+      "duration_minutes": 5,
+      "level_min": 10,
+      "location": "Entrées : Verteron (Élyséens), Altgard (Asmodiens)",
+      "variants_en": [
+        "Jump Jump", "Wraith Evasion", "Mysterious Track", "Hidden Lugi",
+        "Odyle Flight Frenzy", "Goldrin's Treasure", "Defend Shugo Merchants",
+        "Up! Up! Up!", "Not This Tile?", "Nyerk Shooter (sans récompense)", "Shugo's Dilemma (sans récompense)"
+      ],
+      "notes_fr": "Un mini-jeu à chaque heure pile. La rotation (quel jeu à quelle heure) n'est pas dans les données du client : visible seulement dans le menu en jeu. Manches de 2 min 30 à 5 min selon le jeu.",
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    },
+    {
+      "id": "dimensional_invasion",
+      "category": "event",
+      "name_fr": "Invasion dimensionnelle",
+      "name_en": "Dimensional Invasion",
+      "schedule": { "type": "hourly", "minute": 30 },
+      "prep_minutes": 3,
+      "duration_minutes": 10,
+      "level_min": 45,
+      "location": "Entrées : Verteron, Altgard",
+      "variants_en": ["Beritra Air Raid", "Accursed Sword", "Incursion of the Spirits"],
+      "variants_fr": ["Attaque aérienne de Beritra", "Épée maudite", "Attaque des esprits"],
+      "notes_fr": "Une invasion au hasard parmi les trois, à chaque demi-heure.",
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    },
+    {
+      "id": "spacetime_rift",
+      "category": "rift",
+      "name_fr": "Faille spatio-temporelle",
+      "name_en": "Spacetime Rift",
+      "schedule": { "type": "interval", "every_hours": 3, "anchor": "02:00" },
+      "duration_minutes": 60,
+      "entry_window_minutes": 10,
+      "level_min": 45,
+      "location": "Portails : Verteron, Eltnen, Altgard, Morheim",
+      "notes_fr": "metabot : toutes les 3 h dès 02:00 serveur. aion2hub : 00:00, 03:00… en GMT+9. Les deux donnent aujourd'hui 23:00 / 02:00 / 05:00 à Paris, mais divergent après le 25 octobre. Fenêtre d'entrée ~10 min et durée 1 h relevées par la communauté.",
+      "confidence": "medium",
+      "sources": ["metabot.gg/en/aion-2/events", "aion2hub.com/tools/event-timer"]
+    }
+  ],
+
+  "pvp": [
+    {
+      "id": "artifact_siege",
+      "category": "pvp",
+      "name_fr": "Siège des artefacts",
+      "name_en": "Artifact Siege",
+      "schedule": { "type": "weekly", "days": ["MON", "THU", "SAT"], "times": ["21:00"] },
+      "level_min": 45,
+      "location": "Reshanta inférieure chaotique",
+      "notes_fr": "3 artefacts : Racine de Reshanta, Île de l'arbre de soufre, Archipel des ailes de Siel. Chaque artefact tenu donne +2,5 % de points Abyssaux. Couloir abyssal de 5 min ensuite.",
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    },
+    {
+      "id": "arena_of_tactics_midday",
+      "category": "pvp",
+      "name_fr": "Arène de stratégie (10v10) – midi",
+      "name_en": "Arena of Tactics",
+      "schedule": { "type": "daily_window", "start": "11:00", "end": "14:00" },
+      "match_minutes": 10,
+      "level_min": 45,
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    },
+    {
+      "id": "arena_of_tactics_evening",
+      "category": "pvp",
+      "name_fr": "Arène de stratégie (10v10) – soir",
+      "name_en": "Arena of Tactics",
+      "schedule": { "type": "daily_window", "start": "19:00", "end": "21:00" },
+      "match_minutes": 10,
+      "level_min": 45,
+      "notes_fr": "Arène de la solitude (1v1) et de coopération (5v5) : pas de fenêtre horaire, ouvertes en continu.",
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    }
+  ],
+
+  "bosses": [
+    {
+      "id": "watcher_kaira",
+      "category": "boss",
+      "name_fr": "Kaira la veilleuse",
+      "name_en": "Watcher Kaira",
+      "level": 65,
+      "zone": "Reshanta inférieure chaotique",
+      "schedule": { "type": "interval", "every_hours": 3, "anchor": "01:00" },
+      "notes_fr": "Apparition garantie sur l'un de ses points d'apparition (6 selon la communauté). Sur KR/TW c'est toutes les 4 h : ne pas mélanger les sources.",
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events", "aion2hub.com/tools/world-bosses"]
+    },
+    {
+      "id": "guardian_lord_nahma",
+      "category": "boss",
+      "name_fr": "Seigneur gardien Nahma",
+      "name_en": "Guardian Lord Nahma",
+      "level": 65,
+      "zone": "Reshanta inférieure chaotique",
+      "schedule": { "type": "weekly", "days": ["FRI", "SUN"], "times": ["21:00"] },
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events", "aion2hub.com/tools/world-bosses"]
+    },
+    {
+      "id": "executor_argo",
+      "category": "boss",
+      "name_fr": "Exécuteur Argo",
+      "name_en": "Executor Argo",
+      "level": 65,
+      "zone": "Reshanta inférieure chaotique – Cœur de Siel",
+      "schedule": { "type": "weekly", "days": ["MON", "THU", "SAT"], "times": ["21:30"] },
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events", "aion2hub.com/tools/world-bosses"]
+    },
+    {
+      "id": "executor_kaira",
+      "category": "boss",
+      "name_fr": "Exécutrice Kaira",
+      "name_en": "Executor Kaira",
+      "level": 65,
+      "zone": "Reshanta inférieure chaotique – Île de la marque",
+      "schedule": { "type": "weekly", "days": ["MON", "THU", "SAT"], "times": ["21:30"] },
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events", "aion2hub.com/tools/world-bosses"]
+    },
+    {
+      "id": "executor_tamasa",
+      "category": "boss",
+      "name_fr": "Exécuteur Tamasa",
+      "name_en": "Executor Tamasa",
+      "level": 65,
+      "zone": "Reshanta inférieure chaotique – Racine de Reshanta",
+      "schedule": { "type": "weekly", "days": ["MON", "THU", "SAT"], "times": ["21:30"] },
+      "confidence": "high",
+      "sources": ["metabot.gg/en/aion-2/events", "aion2hub.com/tools/world-bosses"]
+    },
+    {
+      "id": "enraged_guardian_lord_nahma",
+      "category": "boss",
+      "name_fr": "Seigneur gardien Nahma enragé",
+      "name_en": "Enraged Guardian Lord Nahma",
+      "level": 80,
+      "zone": "Reshanta intermédiaire chaotique",
+      "schedule": { "type": "weekly", "days": ["FRI", "SUN"], "times": ["21:00"] },
+      "notes_fr": "Présent dans le client global récent (metabot), absent des données du test de septembre (aion2hub). Contenu niveau 80 : probablement pas encore atteignable au lancement.",
+      "confidence": "medium",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    },
+    {
+      "id": "executioner_dramos",
+      "category": "boss",
+      "name_fr": "Bourreau Dramos",
+      "name_en": "Executioner Dramos",
+      "level": 80,
+      "zone": "Reshanta intermédiaire chaotique – Cœur corrodé",
+      "schedule": { "type": "weekly", "days": ["MON", "THU", "SAT"], "times": ["21:30"] },
+      "confidence": "medium",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    },
+    {
+      "id": "ravager_marakha",
+      "category": "boss",
+      "name_fr": "Ravageur Marakha",
+      "name_en": "Ravager Marakha",
+      "level": 80,
+      "zone": "Reshanta intermédiaire chaotique – Tombe du titan d'acier",
+      "schedule": { "type": "weekly", "days": ["MON", "THU", "SAT"], "times": ["21:30"] },
+      "confidence": "medium",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    },
+    {
+      "id": "turncoat_ducal",
+      "category": "boss",
+      "name_fr": "Ducal le renégat",
+      "name_en": "Turncoat Ducal",
+      "level": 80,
+      "zone": "Reshanta intermédiaire chaotique – Zone des fragments érodés",
+      "schedule": { "type": "weekly", "days": ["MON", "THU", "SAT"], "times": ["21:30"] },
+      "confidence": "medium",
+      "sources": ["metabot.gg/en/aion-2/events"]
+    }
+  ],
+
+  "excluded": [
+    { "name_en": "Abyss Rift Zone", "reason_fr": "KR/TW uniquement (mar./jeu. 22:00), pas dans le client global." },
+    { "name_en": "Spacetime Rift Domination", "reason_fr": "KR/TW uniquement (lun./jeu./sam. 20:00 et 23:00), pas dans le client global." },
+    { "name_en": "Boss de zone Verteron/Altgard (Silent Dartan, Lagta, Kashapa)", "reason_fr": "Pas d'horaire fixe dans les données : localisés, pas minutés." }
+  ]
+}

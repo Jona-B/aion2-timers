@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AION 2 Timers</string>
+    <string name="widget_label">AION 2 · Boss &amp; Évènements</string>
+    <string name="widget_desc">Prochains boss et évènements d\'AION 2 avec compte à rebours</string>
+    <string name="title">AION 2 · Boss &amp; Évènements</string>
+    <string name="subtitle">Serveurs européens. Heures affichées dans le fuseau de ton téléphone, mises à jour toutes les 30 s.</string>
+    <string name="howto">Pour ajouter le widget : appui long sur l\'écran d\'accueil → Widgets → AION 2 Timers.</string>
+    <string name="tz_note">Le fuseau du serveur EU n\'est pas confirmé officiellement. Vérifie ce soir : si Kaira la veilleuse apparaît à 22:00 (heure de Paris), garde Europe/Berlin. Si elle apparaît à 21:00 ou 00:00, passe sur Asia/Tokyo avec le bouton ci-dessus. Les resets sont à 16:00 heure serveur, comme sur metabot.gg.</string>
+    <string name="sources">Données : client global AION 2 (metabot.gg, aion2hub.com). Pas de planning officiel NCSOFT.</string>
+</resources>
