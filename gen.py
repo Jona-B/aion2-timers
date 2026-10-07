@@ -64,8 +64,8 @@ packageInfo:
   forcedPackageId: 127
   renameManifestPackage: null
 versionInfo:
-  versionCode: 6
-  versionName: 1.4
+  versionCode: 7
+  versionName: 1.4.1
 resourcesAreCompressed: false
 sharedLibrary: false
 sparseResources: false
@@ -281,13 +281,22 @@ w('res/layout/widget.xml', f"""<?xml version="1.0" encoding="utf-8"?>
         android:textColor="@color/label" android:textSize="38sp" android:fontFamily="sans-serif"
         android:textStyle="bold" android:fontFeatureSettings="tnum" android:includeFontPadding="false"
         android:layout_marginTop="4dp"/>
-    <View android:layout_width="match_parent" android:layout_height="0.5dp" android:layout_marginTop="10dp"
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0.5dp" android:layout_marginTop="10dp"
         android:background="@color/separator"/>
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp"
         android:text="@string/after_that" android:textColor="@color/secondary" android:textSize="11sp"
         android:letterSpacing="0.06" android:fontFamily="sans-serif-medium"/>{''.join(rows)}
 </LinearLayout>
 """)
+
+
+# Widgets (RemoteViews) only accept a fixed set of view classes; anything else = "Can't add widget".
+import re as _re
+_ALLOWED = {'FrameLayout', 'LinearLayout', 'RelativeLayout', 'GridLayout', 'AnalogClock', 'Button',
+            'Chronometer', 'ImageButton', 'ImageView', 'ProgressBar', 'TextView', 'ViewFlipper',
+            'ListView', 'GridView', 'StackView', 'AdapterViewFlipper', 'ViewStub', 'TextClock'}
+_used = set(_re.findall(r'<([A-Za-z][\w.]*)', open(os.path.join(OUT, 'res/layout/widget.xml'), encoding='utf-8').read())) - {'xml'}
+assert _used <= _ALLOWED, 'widget layout uses classes not allowed in RemoteViews: %s' % sorted(_used - _ALLOWED)
 
 # ---------------------------------------------------------------- smali: Schedule
 def int_array(field, values):
