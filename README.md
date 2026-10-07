@@ -3,8 +3,7 @@
 Android home-screen widget and companion app that track upcoming **AION 2** bosses and
 recurring events on the European servers, with live countdowns.
 
-The app is available in **English** and **French**: it follows the phone's language
-(French on French-language devices, English everywhere else).
+The app is available in **English** and **French**: it follows your phone's language.
 
 ## Features
 
@@ -12,6 +11,7 @@ The app is available in **English** and **French**: it follows the phone's langu
   a colour dot per category and an "ongoing" state while an event is running.
 - **App**: one card per event (category, local time, countdown, progress ring),
   tabs to filter by Events, Bosses and PvP, light and dark themes.
+- **Local time**: all times are shown in your phone's time zone.
 - **Server time zone switch**: Europe/Berlin (default) or Asia/Tokyo, applied to both
   the app and the widget.
 
@@ -31,35 +31,25 @@ The app is available in **English** and **French**: it follows the phone's langu
 | Arena of Tactics (10v10) | daily 11:00–14:00 and 19:00–21:00 |
 | Daily / weekly reset | 16:00 daily / Wednesday 16:00 |
 
-Times match [metabot.gg](https://metabot.gg/en/aion-2/events), which reads them from the
-global game client. NCSOFT does not publish an official schedule, and the EU server time
-zone is not officially confirmed.
-
 ## Install
 
-Download `AION2-Timers.apk` from the latest [release](../../releases), open it on your
-phone and allow installation from that source. Then long-press the home screen →
-Widgets → AION 2 Timers.
+Requires Android 7.0 or later.
 
-## Editing the schedule
+1. Download `AION2-Timers.apk` from the latest [release](../../releases) on your phone.
+2. Open it and allow installation from that source when Android asks.
+   Play Protect may warn about an unknown app: choose "Install anyway".
+3. Long-press your home screen → Widgets → **AION 2 Timers**.
 
-Everything lives in `gen.py`: the `RULES` table (server times), the English names
-(`NAMES_EN`) and the French and English UI strings (`STR_EN`, `STR_FR`).
+New versions install over the previous one; your settings are kept.
 
-## Automatic builds
+## Good to know
 
-Every push to `main` runs `.github/workflows/build-apk.yml`: `gen.py` regenerates the
-apktool project (`src/`), then the APK is built, signed and published under **Releases**.
+- NCSOFT does not publish an official schedule. Times come from the global game client
+  as read by [metabot.gg](https://metabot.gg/en/aion-2/events) and may change with patches.
+- The EU server time zone is not officially confirmed. If Watcher Kaira does not spawn at
+  the time shown, switch the server time zone in the app (link at the top of the list).
 
-Requirement: a `KEYSTORE_BASE64` repository secret (the signing keystore, base64-encoded).
-The key is never committed. Keep it safe: the same key is needed to install updates over
-an existing install.
+## Disclaimer
 
-## Local build
-
-```sh
-APKTOOL=apktool.jar APKSIGNER=apksigner.jar ./build.sh
-```
-
-Requires Java 17+ and Python 3. `apktool.jar` and `apksigner.jar` come from the
-`@postar/apktool-node` npm package.
+Unofficial fan-made tool, not affiliated with or endorsed by NCSOFT.
+AION is a trademark of NCSOFT Corporation.
