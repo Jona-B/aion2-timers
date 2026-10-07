@@ -9,7 +9,7 @@
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="28dp">
                 <TextView android:id="@+id/title" android:layout_width="0dp" android:layout_weight="1"
-                    android:layout_height="wrap_content" android:text="Résumé" android:textColor="@color/label"
+                    android:layout_height="wrap_content" android:text="@string/tab_0" android:textColor="@color/label"
                     android:textSize="34sp" android:textStyle="bold" android:fontFamily="sans-serif"
                     android:letterSpacing="-0.01"/>
                 <ImageView android:layout_width="38dp" android:layout_height="38dp" android:src="@mipmap/ic_launcher"/>
@@ -17,7 +17,7 @@
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal" android:gravity="bottom" android:paddingTop="20dp" android:paddingBottom="2dp">
                 <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
-                    android:text="À suivre" android:textColor="@color/label" android:textSize="22sp"
+                    android:text="@string/up_next" android:textColor="@color/label" android:textSize="22sp"
                     android:textStyle="bold" android:fontFamily="sans-serif"/>
                 <TextView android:id="@+id/tzlink" android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:textColor="@color/link" android:textSize="17sp" android:clickable="true" android:focusable="true"
@@ -641,7 +641,7 @@
             <ImageView android:id="@+id/ti0" android:layout_width="26dp" android:layout_height="26dp"
                 android:src="@drawable/ic_heart"/>
             <TextView android:id="@+id/tl0" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_marginTop="2dp" android:text="Résumé" android:textSize="10sp"
+                android:layout_marginTop="2dp" android:text="@string/tab_0" android:textSize="10sp"
                 android:fontFamily="sans-serif-medium" android:textColor="@color/secondary"/>
         </LinearLayout>
         <LinearLayout android:id="@+id/tab1" android:layout_width="0dp" android:layout_weight="1"
@@ -650,7 +650,7 @@
             <ImageView android:id="@+id/ti1" android:layout_width="26dp" android:layout_height="26dp"
                 android:src="@drawable/ic_event"/>
             <TextView android:id="@+id/tl1" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_marginTop="2dp" android:text="Évènements" android:textSize="10sp"
+                android:layout_marginTop="2dp" android:text="@string/tab_1" android:textSize="10sp"
                 android:fontFamily="sans-serif-medium" android:textColor="@color/secondary"/>
         </LinearLayout>
         <LinearLayout android:id="@+id/tab2" android:layout_width="0dp" android:layout_weight="1"
@@ -659,7 +659,7 @@
             <ImageView android:id="@+id/ti2" android:layout_width="26dp" android:layout_height="26dp"
                 android:src="@drawable/ic_boss"/>
             <TextView android:id="@+id/tl2" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_marginTop="2dp" android:text="Boss" android:textSize="10sp"
+                android:layout_marginTop="2dp" android:text="@string/tab_2" android:textSize="10sp"
                 android:fontFamily="sans-serif-medium" android:textColor="@color/secondary"/>
         </LinearLayout>
         <LinearLayout android:id="@+id/tab3" android:layout_width="0dp" android:layout_weight="1"
@@ -668,7 +668,7 @@
             <ImageView android:id="@+id/ti3" android:layout_width="26dp" android:layout_height="26dp"
                 android:src="@drawable/ic_pvp"/>
             <TextView android:id="@+id/tl3" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_marginTop="2dp" android:text="PvP" android:textSize="10sp"
+                android:layout_marginTop="2dp" android:text="@string/tab_3" android:textSize="10sp"
                 android:fontFamily="sans-serif-medium" android:textColor="@color/secondary"/>
         </LinearLayout>
     </LinearLayout>

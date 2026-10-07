@@ -73,8 +73,9 @@
     const-string v1, "n"
     invoke-static {v0, v1, p1}, Lapp/aion2/timers/TimerWidget;->vid(Landroid/content/Context;Ljava/lang/String;I)I
     move-result v8
-    sget-object v1, Lapp/aion2/timers/Schedule;->NAMES:[Ljava/lang/String;
-    aget-object v1, v1, p2
+    const-string v1, "rule_"
+    invoke-static {v0, v1, p2}, Lapp/aion2/timers/Schedule;->strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    move-result-object v1
     invoke-virtual {p0, v8, v1}, Landroid/widget/RemoteViews;->setTextViewText(ILjava/lang/CharSequence;)V
     const-string v1, "d"
     invoke-static {v0, v1, p1}, Lapp/aion2/timers/TimerWidget;->vid(Landroid/content/Context;Ljava/lang/String;I)I
@@ -86,7 +87,9 @@
     invoke-virtual {p0, v8, v1}, Landroid/widget/RemoteViews;->setTextColor(II)V
     cmp-long v1, v2, v4
     if-gtz v1, :future
-    const-string v10, "en cours"
+    const-string v10, "ongoing"
+    invoke-static {v0, v10}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v10
     move-wide v11, v6
     goto :settext
     :future
@@ -139,7 +142,8 @@
     sput-wide v4, Lapp/aion2/timers/TimerWidget;->sElapsed:J
     new-instance v4, Ljava/text/SimpleDateFormat;
     const-string v5, "EEE HH:mm"
-    sget-object v6, Ljava/util/Locale;->FRANCE:Ljava/util/Locale;
+    invoke-static {}, Ljava/util/Locale;->getDefault()Ljava/util/Locale;
+    move-result-object v6
     invoke-direct {v4, v5, v6}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
     sput-object v4, Lapp/aion2/timers/TimerWidget;->sFmt:Ljava/text/SimpleDateFormat;
     invoke-static {p0}, Lapp/aion2/timers/Schedule;->serverTz(Landroid/content/Context;)Ljava/util/TimeZone;

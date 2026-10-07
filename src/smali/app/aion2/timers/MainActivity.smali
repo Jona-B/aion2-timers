@@ -160,7 +160,8 @@
     iput v0, p0, Lapp/aion2/timers/MainActivity;->tab:I
     new-instance v0, Ljava/text/SimpleDateFormat;
     const-string v1, "EEE HH:mm"
-    sget-object v2, Ljava/util/Locale;->FRANCE:Ljava/util/Locale;
+    invoke-static {}, Ljava/util/Locale;->getDefault()Ljava/util/Locale;
+    move-result-object v2
     invoke-direct {v0, v1, v2}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
     iput-object v0, p0, Lapp/aion2/timers/MainActivity;->fmt:Ljava/text/SimpleDateFormat;
     const-string v0, "tzlink"
@@ -300,16 +301,19 @@
     add-int/lit8 v4, v4, 0x1
     goto :loop
     :done
-    sget-object v4, Lapp/aion2/timers/MainActivity;->TITLES:[Ljava/lang/String;
     iget v5, p0, Lapp/aion2/timers/MainActivity;->tab:I
-    aget-object v4, v4, v5
+    const-string v4, "tab_"
+    invoke-static {p0, v4, v5}, Lapp/aion2/timers/Schedule;->strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    move-result-object v4
     const-string v5, "title"
     invoke-direct {p0, v5}, Lapp/aion2/timers/MainActivity;->vn(Ljava/lang/String;)Landroid/view/View;
     move-result-object v5
     check-cast v5, Landroid/widget/TextView;
     invoke-virtual {v5, v4}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
     new-instance v4, Ljava/lang/StringBuilder;
-    const-string v5, "Serveur : "
+    const-string v5, "server_prefix"
+    invoke-static {p0, v5}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v5
     invoke-direct {v4, v5}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
     invoke-static {p0}, Lapp/aion2/timers/Schedule;->tzName(Landroid/content/Context;)Ljava/lang/String;
     move-result-object v5
@@ -383,8 +387,9 @@
     invoke-direct {p0, v10, p1}, Lapp/aion2/timers/MainActivity;->vk(Ljava/lang/String;I)Landroid/view/View;
     move-result-object v10
     check-cast v10, Landroid/widget/TextView;
-    sget-object v9, Lapp/aion2/timers/MainActivity;->CATS:[Ljava/lang/String;
-    aget-object v9, v9, v4
+    const-string v9, "cat_"
+    invoke-static {p0, v9, v4}, Lapp/aion2/timers/Schedule;->strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    move-result-object v9
     invoke-virtual {v10, v9}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
     invoke-virtual {v10, v5}, Landroid/widget/TextView;->setTextColor(I)V
     const-string v10, "tm"
@@ -401,8 +406,9 @@
     invoke-direct {p0, v10, p1}, Lapp/aion2/timers/MainActivity;->vk(Ljava/lang/String;I)Landroid/view/View;
     move-result-object v10
     check-cast v10, Landroid/widget/TextView;
-    sget-object v9, Lapp/aion2/timers/Schedule;->NAMES:[Ljava/lang/String;
-    aget-object v9, v9, p2
+    const-string v9, "rule_"
+    invoke-static {p0, v9, p2}, Lapp/aion2/timers/Schedule;->strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    move-result-object v9
     invoke-virtual {v10, v9}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
     cmp-long v9, v0, v2
     if-gtz v9, :upcoming
@@ -425,12 +431,16 @@
     move-result-object v10
     check-cast v10, Landroid/widget/TextView;
     if-eqz v6, :capup
-    const-string v9, "restantes \u00b7 en cours"
+    const-string v9, "cap_live"
+    invoke-static {p0, v9}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v9
     invoke-virtual {v10, v9}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
     invoke-virtual {v10, v5}, Landroid/widget/TextView;->setTextColor(I)V
     goto :ring
     :capup
-    const-string v9, "avant le d\u00e9but"
+    const-string v9, "cap_until"
+    invoke-static {p0, v9}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v9
     invoke-virtual {v10, v9}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
     const v9, -0x71716d
     invoke-virtual {v10, v9}, Landroid/widget/TextView;->setTextColor(I)V
@@ -479,8 +489,12 @@
     rem-long v4, v0, v4
     const-wide/16 v6, 0x3c
     div-long/2addr v4, v6
-    const-string v8, "j"
-    const-string v9, "h"
+    const-string v8, "unit_d"
+    invoke-static {p0, v8}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v8
+    const-string v9, "unit_h"
+    invoke-static {p0, v9}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v9
     goto :show2
     :lt_day
     const-wide/16 v2, 0x3c
@@ -488,8 +502,12 @@
     if-ltz v4, :lt_hour
     rem-long v4, v0, v2
     div-long v2, v0, v2
-    const-string v8, "h"
-    const-string v9, "min"
+    const-string v8, "unit_h"
+    invoke-static {p0, v8}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v8
+    const-string v9, "unit_min"
+    invoke-static {p0, v9}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v9
     :show2
     invoke-static {v2, v3}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
     move-result-object v6
@@ -513,7 +531,9 @@
     move-result-object v6
     const-string v7, "vm"
     invoke-direct {p0, v7, p1, v6}, Lapp/aion2/timers/MainActivity;->tv(Ljava/lang/String;ILjava/lang/String;)V
-    const-string v6, "min"
+    const-string v6, "unit_min"
+    invoke-static {p0, v6}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v6
     const-string v7, "um"
     invoke-direct {p0, v7, p1, v6}, Lapp/aion2/timers/MainActivity;->tv(Ljava/lang/String;ILjava/lang/String;)V
     return-void

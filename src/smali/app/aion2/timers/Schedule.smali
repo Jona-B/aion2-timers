@@ -392,6 +392,28 @@
     return v0
 .end method
 
+.method public static str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    .locals 1
+    const-string v0, "string"
+    invoke-static {p0, p1, v0}, Lapp/aion2/timers/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
+    move-result v0
+    invoke-virtual {p0, v0}, Landroid/content/Context;->getString(I)Ljava/lang/String;
+    move-result-object v0
+    return-object v0
+.end method
+
+.method public static strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    .locals 1
+    new-instance v0, Ljava/lang/StringBuilder;
+    invoke-direct {v0, p1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v0
+    invoke-static {p0, v0}, Lapp/aion2/timers/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v0
+    return-object v0
+.end method
+
 # "42 min" or "3 h 05" for a positive duration in ms (rounded up to the minute).
 .method public static rel(J)Ljava/lang/String;
     .locals 10

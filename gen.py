@@ -23,7 +23,7 @@ RULES = [
     ("Nahma enragé (niv. 80)",           2,  66, 1260,   1,  1,  15, 0),
 ]
 N = len(RULES)
-COLORS = [0xFF007AFF, 0xFFAF52DE, 0xFFFF2D55, 0xFFFF9500, 0xFF30B0C7]  # palette Apple
+COLORS = [0xFF007AFF, 0xFFAF52DE, 0xFFFF2D55, 0xFFFF9500, 0xFF30B0C7]
 ROWS = 8
 
 
@@ -64,8 +64,8 @@ packageInfo:
   forcedPackageId: 127
   renameManifestPackage: null
 versionInfo:
-  versionCode: 3
-  versionName: 1.2
+  versionCode: 4
+  versionName: 1.3
 resourcesAreCompressed: false
 sharedLibrary: false
 sparseResources: false
@@ -98,19 +98,53 @@ w('AndroidManifest.xml', f"""<?xml version="1.0" encoding="utf-8"?>
 </manifest>
 """)
 
-# ---------------------------------------------------------------- resources
-w('res/values/strings.xml', """<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">AION 2 Timers</string>
-    <string name="widget_label">AION 2 · Boss &amp; Évènements</string>
-    <string name="widget_desc">Prochains boss et évènements d\\'AION 2 avec compte à rebours</string>
-    <string name="title">AION 2 · Boss &amp; Évènements</string>
-    <string name="subtitle">Serveurs européens. Heures affichées dans le fuseau de ton téléphone, mises à jour toutes les 30 s.</string>
-    <string name="howto">Pour ajouter le widget : appui long sur l\\'écran d\\'accueil → Widgets → AION 2 Timers.</string>
-    <string name="tz_note">Le fuseau du serveur EU n\\'est pas confirmé officiellement. Vérifie ce soir : si Kaira la veilleuse apparaît à 22:00 (heure de Paris), garde Europe/Berlin. Si elle apparaît à 21:00 ou 00:00, passe sur Asia/Tokyo avec le bouton ci-dessus. Les resets sont à 16:00 heure serveur, comme sur metabot.gg.</string>
-    <string name="sources">Données : client global AION 2 (metabot.gg, aion2hub.com). Pas de planning officiel NCSOFT.</string>
-</resources>
-""")
+# ---------------------------------------------------------------- resources (EN default, FR override)
+NAMES_EN = ['Shugo Festival', 'Dimensional Invasion', 'Spacetime Rift', 'Watcher Kaira', 'Artifact Siege', 'Executors Argo · Kaira · Tamasa', 'Guardian Lord Nahma', 'Arena of Tactics (midday)', 'Arena of Tactics (evening)', 'Daily reset', 'Weekly reset', 'Lv. 80 bosses: Dramos · Marakha · Ducal', 'Enraged Nahma (Lv. 80)']
+
+def xesc(t):
+    return t.replace('&', '&amp;').replace("'", "\\'").replace('<', '&lt;')
+
+STR_EN = dict(
+    app_name="AION 2 Timers",
+    widget_label="AION 2 · Bosses & Events",
+    widget_desc="Upcoming AION 2 bosses and events with live countdowns",
+    up_next="Up next",
+    ongoing="live",
+    cap_live="remaining · live",
+    cap_until="until start",
+    server_prefix="Server: ",
+    unit_d="d", unit_h="h", unit_min="min",
+    tab_0="Summary", tab_1="Events", tab_2="Bosses", tab_3="PvP",
+    cat_0="Event", cat_1="Rift", cat_2="Boss", cat_3="PvP", cat_4="Reset",
+    howto="To add the widget: long-press your home screen → Widgets → AION 2 Timers.",
+    tz_note="The EU server time zone is not officially confirmed. Check in game: if Watcher Kaira spawns at 22:00 Paris time, keep Europe/Berlin. If she spawns at 21:00 or 00:00, switch to Asia/Tokyo with the link above. Resets happen at 16:00 server time, as on metabot.gg.",
+    sources="Data: AION 2 global client (metabot.gg, aion2hub.com). NCSOFT publishes no official schedule.",
+)
+STR_FR = dict(
+    widget_label="AION 2 · Boss & Évènements",
+    widget_desc="Prochains boss et évènements d'AION 2 avec compte à rebours",
+    up_next="À suivre",
+    ongoing="en cours",
+    cap_live="restantes · en cours",
+    cap_until="avant le début",
+    server_prefix="Serveur : ",
+    unit_d="j", unit_h="h", unit_min="min",
+    tab_0="Résumé", tab_1="Évènements", tab_2="Boss", tab_3="PvP",
+    cat_0="Évènement", cat_1="Faille", cat_2="Boss", cat_3="PvP", cat_4="Reset",
+    howto="Pour ajouter le widget : appui long sur l'écran d'accueil → Widgets → AION 2 Timers.",
+    tz_note="Le fuseau du serveur EU n'est pas confirmé officiellement. Vérifie en jeu : si Kaira la veilleuse apparaît à 22:00 (heure de Paris), garde Europe/Berlin. Si elle apparaît à 21:00 ou 00:00, passe sur Asia/Tokyo avec le lien ci-dessus. Les resets sont à 16:00 heure serveur, comme sur metabot.gg.",
+    sources="Données : client global AION 2 (metabot.gg, aion2hub.com). Pas de planning officiel NCSOFT.",
+)
+for i, r in enumerate(RULES):
+    STR_EN['rule_%d' % i] = NAMES_EN[i]
+    STR_FR['rule_%d' % i] = r[0]
+
+def strings_xml(d):
+    body = '\n'.join('    <string name="%s">%s</string>' % (k, xesc(v)) for k, v in d.items())
+    return '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n' + body + '\n</resources>\n'
+
+w('res/values/strings.xml', strings_xml(STR_EN))
+w('res/values-fr/strings.xml', strings_xml(STR_FR))
 
 w('res/values/colors.xml', """<?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -174,10 +208,10 @@ w('res/xml/widget_info.xml', """<?xml version="1.0" encoding="utf-8"?>
 """)
 
 # placeholders so the picker preview looks real
-PREVIEW = [("Festival des Shugos", "en cours", 0), ("Invasion dimensionnelle", "mer. 21:30", 0),
-           ("Kaira la veilleuse", "mer. 22:00", 2), ("Faille spatio-temporelle", "mer. 23:00", 1),
-           ("Reset quotidien", "jeu. 16:00", 4), ("Arène 10v10 (midi)", "jeu. 11:00", 3),
-           ("Arène 10v10 (soir)", "jeu. 19:00", 3), ("Siège des artefacts", "jeu. 21:00", 3)]
+PREVIEW = [("@string/rule_0", "@string/ongoing", 0), ("@string/rule_1", "21:30", 0),
+           ("@string/rule_3", "22:00", 2), ("@string/rule_2", "23:00", 1),
+           ("@string/rule_9", "16:00", 4), ("@string/rule_7", "11:00", 3),
+           ("@string/rule_8", "19:00", 3), ("@string/rule_4", "21:00", 3)]
 rows = []
 for k in range(ROWS):
     name, when, cat = PREVIEW[k]
@@ -205,7 +239,7 @@ w('res/layout/widget.xml', f"""<?xml version="1.0" encoding="utf-8"?>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="4dp">
         <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
-            android:text="AION 2 · Boss &amp; Évènements" android:textColor="#FFE8C46A"
+            android:text="@string/widget_label" android:textColor="#FFE8C46A"
             android:textSize="13sp" android:textStyle="bold" android:singleLine="true" android:ellipsize="end"/>
         <TextView android:id="@+id/tz" android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Europe/Berlin" android:textColor="#80FFFFFF" android:textSize="10sp"/>
@@ -440,6 +474,28 @@ w(f'smali/app/aion2/timers/Schedule.smali', f""".class public final {P}/Schedule
     return v0
 .end method
 
+.method public static str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    .locals 1
+    const-string v0, "string"
+    invoke-static {{p0, p1, v0}}, {P}/Schedule;->id(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)I
+    move-result v0
+    invoke-virtual {{p0, v0}}, Landroid/content/Context;->getString(I)Ljava/lang/String;
+    move-result-object v0
+    return-object v0
+.end method
+
+.method public static strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    .locals 1
+    new-instance v0, Ljava/lang/StringBuilder;
+    invoke-direct {{v0, p1}}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+    invoke-virtual {{v0, p2}}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+    invoke-virtual {{v0}}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v0
+    invoke-static {{p0, v0}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v0
+    return-object v0
+.end method
+
 # "42 min" or "3 h 05" for a positive duration in ms (rounded up to the minute).
 .method public static rel(J)Ljava/lang/String;
     .locals 10
@@ -554,8 +610,9 @@ w('smali/app/aion2/timers/TimerWidget.smali', f""".class public {P}/TimerWidget;
     const-string v1, "n"
     invoke-static {{v0, v1, p1}}, {P}/TimerWidget;->vid(Landroid/content/Context;Ljava/lang/String;I)I
     move-result v8
-    sget-object v1, {P}/Schedule;->NAMES:[Ljava/lang/String;
-    aget-object v1, v1, p2
+    const-string v1, "rule_"
+    invoke-static {{v0, v1, p2}}, {P}/Schedule;->strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    move-result-object v1
     invoke-virtual {{p0, v8, v1}}, Landroid/widget/RemoteViews;->setTextViewText(ILjava/lang/CharSequence;)V
     const-string v1, "d"
     invoke-static {{v0, v1, p1}}, {P}/TimerWidget;->vid(Landroid/content/Context;Ljava/lang/String;I)I
@@ -567,7 +624,9 @@ w('smali/app/aion2/timers/TimerWidget.smali', f""".class public {P}/TimerWidget;
     invoke-virtual {{p0, v8, v1}}, Landroid/widget/RemoteViews;->setTextColor(II)V
     cmp-long v1, v2, v4
     if-gtz v1, :future
-    const-string v10, "en cours"
+    const-string v10, "ongoing"
+    invoke-static {{v0, v10}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v10
     move-wide v11, v6
     goto :settext
     :future
@@ -620,7 +679,8 @@ w('smali/app/aion2/timers/TimerWidget.smali', f""".class public {P}/TimerWidget;
     sput-wide v4, {P}/TimerWidget;->sElapsed:J
     new-instance v4, Ljava/text/SimpleDateFormat;
     const-string v5, "EEE HH:mm"
-    sget-object v6, Ljava/util/Locale;->FRANCE:Ljava/util/Locale;
+    invoke-static {{}}, Ljava/util/Locale;->getDefault()Ljava/util/Locale;
+    move-result-object v6
     invoke-direct {{v4, v5, v6}}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
     sput-object v4, {P}/TimerWidget;->sFmt:Ljava/text/SimpleDateFormat;
     invoke-static {{p0}}, {P}/Schedule;->serverTz(Landroid/content/Context;)Ljava/util/TimeZone;
@@ -708,7 +768,7 @@ w('smali/app/aion2/timers/TimerWidget.smali', f""".class public {P}/TimerWidget;
 """)
 
 
-# ================================================================ UI façon Apple Santé
+# ================================================================ main screen UI
 def s32(x):
     """Littéral smali signé pour une constante 32 bits."""
     x &= 0xffffffff
@@ -870,7 +930,7 @@ def tab(i):
             <ImageView android:id="@+id/ti{i}" android:layout_width="26dp" android:layout_height="26dp"
                 android:src="@drawable/{TAB_ICONS[i]}"/>
             <TextView android:id="@+id/tl{i}" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_marginTop="2dp" android:text="{TITLES[i]}" android:textSize="10sp"
+                android:layout_marginTop="2dp" android:text="@string/tab_{i}" android:textSize="10sp"
                 android:fontFamily="sans-serif-medium" android:textColor="@color/secondary"/>
         </LinearLayout>"""
 
@@ -885,7 +945,7 @@ w('res/layout/activity_main.xml', f"""<?xml version="1.0" encoding="utf-8"?>
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal" android:gravity="center_vertical" android:paddingTop="28dp">
                 <TextView android:id="@+id/title" android:layout_width="0dp" android:layout_weight="1"
-                    android:layout_height="wrap_content" android:text="Résumé" android:textColor="@color/label"
+                    android:layout_height="wrap_content" android:text="@string/tab_0" android:textColor="@color/label"
                     android:textSize="34sp" android:textStyle="bold" android:fontFamily="sans-serif"
                     android:letterSpacing="-0.01"/>
                 <ImageView android:layout_width="38dp" android:layout_height="38dp" android:src="@mipmap/ic_launcher"/>
@@ -893,7 +953,7 @@ w('res/layout/activity_main.xml', f"""<?xml version="1.0" encoding="utf-8"?>
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal" android:gravity="bottom" android:paddingTop="20dp" android:paddingBottom="2dp">
                 <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
-                    android:text="À suivre" android:textColor="@color/label" android:textSize="22sp"
+                    android:text="@string/up_next" android:textColor="@color/label" android:textSize="22sp"
                     android:textStyle="bold" android:fontFamily="sans-serif"/>
                 <TextView android:id="@+id/tzlink" android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:textColor="@color/link" android:textSize="17sp" android:clickable="true" android:focusable="true"
@@ -1038,7 +1098,8 @@ w('smali/app/aion2/timers/MainActivity.smali', f""".class public {A};
     iput v0, p0, {A};->tab:I
     new-instance v0, Ljava/text/SimpleDateFormat;
     const-string v1, "EEE HH:mm"
-    sget-object v2, Ljava/util/Locale;->FRANCE:Ljava/util/Locale;
+    invoke-static {{}}, Ljava/util/Locale;->getDefault()Ljava/util/Locale;
+    move-result-object v2
     invoke-direct {{v0, v1, v2}}, Ljava/text/SimpleDateFormat;-><init>(Ljava/lang/String;Ljava/util/Locale;)V
     iput-object v0, p0, {A};->fmt:Ljava/text/SimpleDateFormat;
     const-string v0, "tzlink"
@@ -1178,16 +1239,19 @@ w('smali/app/aion2/timers/MainActivity.smali', f""".class public {A};
     add-int/lit8 v4, v4, 0x1
     goto :loop
     :done
-    sget-object v4, {A};->TITLES:[Ljava/lang/String;
     iget v5, p0, {A};->tab:I
-    aget-object v4, v4, v5
+    const-string v4, "tab_"
+    invoke-static {{p0, v4, v5}}, {P}/Schedule;->strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    move-result-object v4
     const-string v5, "title"
     invoke-direct {{p0, v5}}, {A};->vn(Ljava/lang/String;)Landroid/view/View;
     move-result-object v5
     check-cast v5, {TV}
     invoke-virtual {{v5, v4}}, {TV}->setText(Ljava/lang/CharSequence;)V
     new-instance v4, Ljava/lang/StringBuilder;
-    const-string v5, "Serveur : "
+    const-string v5, "server_prefix"
+    invoke-static {{p0, v5}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v5
     invoke-direct {{v4, v5}}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
     invoke-static {{p0}}, {P}/Schedule;->tzName(Landroid/content/Context;)Ljava/lang/String;
     move-result-object v5
@@ -1261,8 +1325,9 @@ w('smali/app/aion2/timers/MainActivity.smali', f""".class public {A};
     invoke-direct {{p0, v10, p1}}, {A};->vk(Ljava/lang/String;I)Landroid/view/View;
     move-result-object v10
     check-cast v10, {TV}
-    sget-object v9, {A};->CATS:[Ljava/lang/String;
-    aget-object v9, v9, v4
+    const-string v9, "cat_"
+    invoke-static {{p0, v9, v4}}, {P}/Schedule;->strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    move-result-object v9
     invoke-virtual {{v10, v9}}, {TV}->setText(Ljava/lang/CharSequence;)V
     invoke-virtual {{v10, v5}}, {TV}->setTextColor(I)V
     const-string v10, "tm"
@@ -1279,8 +1344,9 @@ w('smali/app/aion2/timers/MainActivity.smali', f""".class public {A};
     invoke-direct {{p0, v10, p1}}, {A};->vk(Ljava/lang/String;I)Landroid/view/View;
     move-result-object v10
     check-cast v10, {TV}
-    sget-object v9, {P}/Schedule;->NAMES:[Ljava/lang/String;
-    aget-object v9, v9, p2
+    const-string v9, "rule_"
+    invoke-static {{p0, v9, p2}}, {P}/Schedule;->strk(Landroid/content/Context;Ljava/lang/String;I)Ljava/lang/String;
+    move-result-object v9
     invoke-virtual {{v10, v9}}, {TV}->setText(Ljava/lang/CharSequence;)V
     cmp-long v9, v0, v2
     if-gtz v9, :upcoming
@@ -1303,12 +1369,16 @@ w('smali/app/aion2/timers/MainActivity.smali', f""".class public {A};
     move-result-object v10
     check-cast v10, {TV}
     if-eqz v6, :capup
-    const-string v9, {sesc("restantes · en cours")}
+    const-string v9, "cap_live"
+    invoke-static {{p0, v9}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v9
     invoke-virtual {{v10, v9}}, {TV}->setText(Ljava/lang/CharSequence;)V
     invoke-virtual {{v10, v5}}, {TV}->setTextColor(I)V
     goto :ring
     :capup
-    const-string v9, {sesc("avant le début")}
+    const-string v9, "cap_until"
+    invoke-static {{p0, v9}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v9
     invoke-virtual {{v10, v9}}, {TV}->setText(Ljava/lang/CharSequence;)V
     const v9, {s32(GREY)}
     invoke-virtual {{v10, v9}}, {TV}->setTextColor(I)V
@@ -1357,8 +1427,12 @@ w('smali/app/aion2/timers/MainActivity.smali', f""".class public {A};
     rem-long v4, v0, v4
     const-wide/16 v6, 0x3c
     div-long/2addr v4, v6
-    const-string v8, "j"
-    const-string v9, "h"
+    const-string v8, "unit_d"
+    invoke-static {{p0, v8}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v8
+    const-string v9, "unit_h"
+    invoke-static {{p0, v9}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v9
     goto :show2
     :lt_day
     const-wide/16 v2, 0x3c
@@ -1366,8 +1440,12 @@ w('smali/app/aion2/timers/MainActivity.smali', f""".class public {A};
     if-ltz v4, :lt_hour
     rem-long v4, v0, v2
     div-long v2, v0, v2
-    const-string v8, "h"
-    const-string v9, "min"
+    const-string v8, "unit_h"
+    invoke-static {{p0, v8}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v8
+    const-string v9, "unit_min"
+    invoke-static {{p0, v9}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v9
     :show2
     invoke-static {{v2, v3}}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
     move-result-object v6
@@ -1391,7 +1469,9 @@ w('smali/app/aion2/timers/MainActivity.smali', f""".class public {A};
     move-result-object v6
     const-string v7, "vm"
     invoke-direct {{p0, v7, p1, v6}}, {A};->tv(Ljava/lang/String;ILjava/lang/String;)V
-    const-string v6, "min"
+    const-string v6, "unit_min"
+    invoke-static {{p0, v6}}, {P}/Schedule;->str(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v6
     const-string v7, "um"
     invoke-direct {{p0, v7, p1, v6}}, {A};->tv(Ljava/lang/String;ILjava/lang/String;)V
     return-void

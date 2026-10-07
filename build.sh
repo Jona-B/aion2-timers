@@ -1,6 +1,6 @@
 #!/bin/sh
-# Reconstruit l'APK : python3 gen.py -> apktool b -> apksigner
-# Outils : apktool.jar et apksigner.jar (npm @postar/apktool-node), Java 17+.
+# Rebuilds the APK: python3 gen.py -> apktool b -> apksigner
+# Tools: apktool.jar and apksigner.jar (npm @postar/apktool-node), Java 17+.
 set -e
 APKTOOL=${APKTOOL:-apktool.jar}; APKSIGNER=${APKSIGNER:-apksigner.jar}
 mkdir -p build
